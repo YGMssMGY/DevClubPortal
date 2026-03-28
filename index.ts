@@ -140,7 +140,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.static("public"));
+app.use(express.static(path.join(process.cwd(), "dist", "public")));
+app.use("/uploads", express.static(path.join(process.cwd(), "public", "uploads")));
 
 /**
  * Database connection (SQLite with foreign key enforcement).

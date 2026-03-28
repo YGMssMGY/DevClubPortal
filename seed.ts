@@ -1,11 +1,21 @@
-const sqlite3 = require("sqlite3");
-const { open } = require("sqlite");
-const bcrypt = require("bcrypt");
-const path = require("path");
+#!/usr/bin/env node
+/**
+ * Full seed script – creates all tables (Users, Teams, Team_Members, Team_Events, Jobs)
+ * and inserts a chief lead user (admin) with all CASCADE constraints.
+ * Database is created in the current working directory (process.cwd()).
+ */
 
+import sqlite3 from "sqlite3";
+import { open, Database } from "sqlite";
+import bcrypt from "bcrypt";
+import path from "path";
+
+/**
+ * Seed the database with the complete schema and a chief lead user.
+ */
 async function seed() {
-	const dbPath = path.join(__dirname, "database.sqlite");
-	const db = await open({
+	const dbPath = path.join(process.cwd(), "database.sqlite");
+	const db: Database = await open({
 		filename: dbPath,
 		driver: sqlite3.Database,
 	});

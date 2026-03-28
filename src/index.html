@@ -9,24 +9,65 @@
 	<body>
 		<nav>
 			<div class="logo">DevClub</div>
-			<a href="login.html" class="btn btn-glass">Login</a>
-			<a href="signup.html" class="btn btn-glass" style="margin-left: 1rem">Sign Up</a>
+			<div class="nav-actions">
+				<button id="themeToggle" class="btn btn-outline" aria-label="Toggle dark mode">
+					🌙
+				</button>
+				<a href="login.html" class="btn btn-outline">Login</a>
+				<a href="signup.html" class="btn btn-primary">Sign Up</a>
+			</div>
 		</nav>
-		<div class="container" style="align-items: center; text-align: center">
-			<div style="max-width: 800px">
-				<h1>Empower Your Development Journey</h1>
-				<p class="subtitle" style="margin: 0 auto 2.5rem; text-align: center">
+		<div
+			class="container"
+			style="
+				text-align: center;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				min-height: calc(100vh - 80px);
+			"
+		>
+			<div>
+				<h1 style="font-size: 3rem; margin-bottom: 1rem">
+					Empower Your Development Journey
+				</h1>
+				<p
+					style="
+						font-size: 1.125rem;
+						color: var(--text-secondary);
+						max-width: 600px;
+						margin: 0 auto 2rem;
+					"
+				>
 					Join the exclusive developers club portal. Manage your assigned objectives,
 					coordinate with your team leads, and deliver high-quality software efficiently.
 				</p>
 				<a
 					href="login.html"
 					class="btn btn-primary"
-					style="font-size: 1.2rem; padding: 1rem 2.5rem"
+					style="font-size: 1rem; padding: 0.75rem 2rem"
 				>
 					Enter Portal
 				</a>
 			</div>
 		</div>
+
+		<script>
+			// Dark mode toggle
+			const themeToggle = document.getElementById("themeToggle");
+			const currentTheme =
+				localStorage.getItem("theme") ||
+				(window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+			if (currentTheme === "dark") {
+				document.documentElement.classList.add("dark");
+				themeToggle.textContent = "☀️";
+			}
+			themeToggle.addEventListener("click", () => {
+				document.documentElement.classList.toggle("dark");
+				const isDark = document.documentElement.classList.contains("dark");
+				localStorage.setItem("theme", isDark ? "dark" : "light");
+				themeToggle.textContent = isDark ? "☀️" : "🌙";
+			});
+		</script>
 	</body>
 </html>

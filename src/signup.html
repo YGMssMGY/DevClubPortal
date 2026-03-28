@@ -9,13 +9,22 @@
 	<body>
 		<nav>
 			<div class="logo">DevClub</div>
-			<a href="index.html" class="btn btn-glass">Back to Home</a>
+			<div class="nav-actions">
+				<button id="themeToggle" class="btn btn-outline">🌙</button>
+				<a href="index.html" class="btn btn-outline">Back to Home</a>
+			</div>
 		</nav>
-		<div class="container">
-			<div class="glass-panel">
-				<h2 style="font-size: 2rem; margin-bottom: 2rem; text-align: center">
-					Create Account
-				</h2>
+		<div
+			class="container"
+			style="
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				min-height: calc(100vh - 80px);
+			"
+		>
+			<div class="card" style="max-width: 400px; width: 100%">
+				<h2 style="text-align: center; margin-bottom: 1.5rem">Create Account</h2>
 				<form id="signupForm">
 					<div class="form-group">
 						<label>Username</label>
@@ -24,7 +33,7 @@
 							id="username"
 							class="form-control"
 							required
-							placeholder="Choose a username"
+							placeholder="choose a username"
 						/>
 					</div>
 					<div class="form-group">
@@ -34,60 +43,81 @@
 							id="password"
 							class="form-control"
 							required
-							placeholder="Choose a strong password"
+							placeholder="choose a strong password"
 						/>
 					</div>
-					<div id="errorMsg" class="error-text"></div>
-					<div id="successMsg" class="success-text" style="display: none"></div>
-					<button
-						type="submit"
-						class="btn btn-primary"
-						style="width: 100%; margin-top: 1rem"
-					>
+					<div
+						id="errorMsg"
+						class="error-text"
+						style="margin-bottom: 1rem; color: var(--error); display: none"
+					></div>
+					<div
+						id="successMsg"
+						style="display: none; color: var(--success); margin-bottom: 1rem"
+					></div>
+					<button type="submit" class="btn btn-primary" style="width: 100%">
 						Sign Up
 					</button>
+					<p style="text-align: center; margin-top: 1rem">
+						Already have an account?
+						<a href="login.html">Log in</a>
+					</p>
 				</form>
-				<p style="text-align: center; margin-top: 1.5rem">
-					Already have an account?
-					<a href="login.html">Log in here</a>
-				</p>
 			</div>
 		</div>
 
 		<script>
+			// Theme toggle
+			const themeToggle = document.getElementById("themeToggle");
+			const currentTheme =
+				localStorage.getItem("theme") ||
+				(window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+			if (currentTheme === "dark") {
+				document.documentElement.classList.add("dark");
+				themeToggle.textContent = "☀️";
+			}
+			themeToggle.addEventListener("click", () => {
+				document.documentElement.classList.toggle("dark");
+				const isDark = document.documentElement.classList.contains("dark");
+				localStorage.setItem("theme", isDark ? "dark" : "light");
+				themeToggle.textContent = isDark ? "☀️" : "🌙";
+			});
+
+			// Signup logic
 			document.getElementById("signupForm").addEventListener("submit", async (e) => {
 				e.preventDefault();
 				const username = document.getElementById("username").value;
 				const password = document.getElementById("password").value;
 				const errorMsg = document.getElementById("errorMsg");
 				const successMsg = document.getElementById("successMsg");
-
 				errorMsg.style.display = "none";
 				successMsg.style.display = "none";
-
+				const submitBtn = e.target.querySelector('button[type="submit"]');
+				const originalText = submitBtn.textContent;
+				submitBtn.disabled = true;
+				submitBtn.innerHTML = '<span class="spinner"></span> Creating account...';
 				try {
 					const res = await fetch("/api/signup", {
 						method: "POST",
 						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify({ username, password }),
 					});
-
 					const data = await res.json();
-
 					if (res.ok) {
 						successMsg.textContent =
 							data.message || "Account created! Redirecting to login...";
 						successMsg.style.display = "block";
-						setTimeout(() => {
-							window.location.href = "/login.html";
-						}, 2000);
+						setTimeout(() => (window.location.href = "/login.html"), 2000);
 					} else {
 						errorMsg.textContent = data.error || "Signup failed";
 						errorMsg.style.display = "block";
 					}
-				} catch (e) {
+				} catch (err) {
 					errorMsg.textContent = "Network error. Please try again.";
 					errorMsg.style.display = "block";
+				} finally {
+					submitBtn.disabled = false;
+					submitBtn.innerHTML = originalText;
 				}
 			});
 		</script>

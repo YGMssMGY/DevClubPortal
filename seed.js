@@ -1,18 +1,18 @@
-const sqlite3 = require('sqlite3');
-const { open } = require('sqlite');
-const bcrypt = require('bcrypt');
-const path = require('path');
+const sqlite3 = require("sqlite3");
+const { open } = require("sqlite");
+const bcrypt = require("bcrypt");
+const path = require("path");
 
 async function seed() {
-    const dbPath = path.join(__dirname, 'database.sqlite');
-    const db = await open({
-        filename: dbPath,
-        driver: sqlite3.Database
-    });
+	const dbPath = path.join(__dirname, "database.sqlite");
+	const db = await open({
+		filename: dbPath,
+		driver: sqlite3.Database,
+	});
 
-    await db.exec('PRAGMA foreign_keys = ON;');
+	await db.exec("PRAGMA foreign_keys = ON;");
 
-    await db.exec(`
+	await db.exec(`
         DROP TABLE IF EXISTS Team_Events;
         DROP TABLE IF EXISTS Team_Members;
         DROP TABLE IF EXISTS Jobs;
@@ -66,14 +66,17 @@ async function seed() {
         );
     `);
 
-    const chiefPasswordHash = await bcrypt.hash('testpassword', 10);
-    await db.run(
-        "INSERT INTO Users (username, password_hash, role) VALUES (?, ?, ?)", 
-        ['admin', chiefPasswordHash, 'chief_lead']
-    );
+	const chiefPasswordHash = await bcrypt.hash("testpassword", 10);
+	await db.run("INSERT INTO Users (username, password_hash, role) VALUES (?, ?, ?)", [
+		"admin",
+		chiefPasswordHash,
+		"chief_lead",
+	]);
 
-    console.log("Database seeded successfully with 'admin' chief_lead and all CASCADE constraints enabled.");
-    await db.close();
+	console.log(
+		"Database seeded successfully with 'admin' chief_lead and all CASCADE constraints enabled.",
+	);
+	await db.close();
 }
 
 seed().catch(console.error);

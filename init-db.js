@@ -1,14 +1,14 @@
-const sqlite3 = require('sqlite3');
-const { open } = require('sqlite');
-const bcrypt = require('bcrypt');
+const sqlite3 = require("sqlite3");
+const { open } = require("sqlite");
+const bcrypt = require("bcrypt");
 
 async function setup() {
-    const db = await open({
-        filename: './database.sqlite',
-        driver: sqlite3.Database
-    });
+	const db = await open({
+		filename: "./database.sqlite",
+		driver: sqlite3.Database,
+	});
 
-    await db.exec(`
+	await db.exec(`
         DROP TABLE IF EXISTS Jobs;
         DROP TABLE IF EXISTS Users;
         CREATE TABLE IF NOT EXISTS Users (
@@ -29,30 +29,32 @@ async function setup() {
         );
     `);
 
-    // Insert dummy leader and member
-    const leaderPasswordHash = await bcrypt.hash('password123', 10);
-    const memberPasswordHash = await bcrypt.hash('password123', 10);
+	// Insert dummy leader and member
+	const leaderPasswordHash = await bcrypt.hash("password123", 10);
+	const memberPasswordHash = await bcrypt.hash("password123", 10);
 
-    const leader = await db.get("SELECT * FROM Users WHERE username = 'leader'");
-    if (!leader) {
-        await db.run(
-            "INSERT INTO Users (username, password_hash, role) VALUES (?, ?, ?)", 
-            ['leader', leaderPasswordHash, 'leader']
-        );
-        console.log("Inserted dummy leader user.");
-    }
+	const leader = await db.get("SELECT * FROM Users WHERE username = 'leader'");
+	if (!leader) {
+		await db.run("INSERT INTO Users (username, password_hash, role) VALUES (?, ?, ?)", [
+			"leader",
+			leaderPasswordHash,
+			"leader",
+		]);
+		console.log("Inserted dummy leader user.");
+	}
 
-    const member = await db.get("SELECT * FROM Users WHERE username = 'member'");
-    if (!member) {
-        await db.run(
-            "INSERT INTO Users (username, password_hash, role) VALUES (?, ?, ?)", 
-            ['member', memberPasswordHash, 'member']
-        );
-        console.log("Inserted dummy member user.");
-    }
+	const member = await db.get("SELECT * FROM Users WHERE username = 'member'");
+	if (!member) {
+		await db.run("INSERT INTO Users (username, password_hash, role) VALUES (?, ?, ?)", [
+			"member",
+			memberPasswordHash,
+			"member",
+		]);
+		console.log("Inserted dummy member user.");
+	}
 
-    console.log("Database initialized successfully!");
-    await db.close();
+	console.log("Database initialized successfully!");
+	await db.close();
 }
 
 setup().catch(console.error);

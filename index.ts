@@ -754,6 +754,35 @@ app.get("/api/members-list", requireAuth, async (_req: Request, res: Response) =
 	}
 });
 
+/**
+ * Public signup – allows anyone to create a member account.
+ */
+app.post("/api/signup", async (req: Request, res: Response) => {
+	const { username, password } = req.body;
+
+	if (!username || !password) {
+		return res.status(400).json({ error: "Username and password are required." });
+	}
+
+	try {
+		// Check if username already exists
+		const existing = await db.get<User>("SELECT id FROM Users WHERE username = ?", [username]);
+		if (existing) {
+			return res.status(409).json({ error: "Username already taken." });
+		}
+
+		const hash = await bcrypt.hash(password, 10);
+		await db.run(
+			"INSERT INTO Users (username, password_hash, role) VALUES (?, ?, ?)",
+			[username, hash, "member"], // enforce 'member' role
+		);
+		res.status(201).json({ message: "User created successfully. Please log in." });
+	} catch (error) {
+		console.error("Signup error:", error);
+		res.status(500).json({ error: "Internal server error" });
+	}
+});
+
 // -------------------------------------------------------------------
 // Start server
 // -------------------------------------------------------------------

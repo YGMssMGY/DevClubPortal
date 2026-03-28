@@ -12,6 +12,7 @@ export default defineConfig({
 				index: path.resolve(__dirname, "src", "index.html"),
 				dashboard: path.resolve(__dirname, "src", "dashboard.html"),
 				login: path.resolve(__dirname, "src", "login.html"),
+				signup: path.resolve(__dirname, "src", "signup.html"),
 			},
 		},
 	},

@@ -230,6 +230,7 @@ nav {
 }
 .tab-content {
 	display: none;
+	margin-bottom: 1dvh;
 }
 .tab-content.active {
 	display: block;

@@ -1,21 +1,44 @@
 {
-  "name": "club-portal",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "dependencies": {
-    "bcrypt": "^6.0.0",
-    "cookie-parser": "^1.4.7",
-    "express": "^5.2.1",
-    "multer": "^2.1.1",
-    "sqlite": "^5.1.1",
-    "sqlite3": "^6.0.1"
-  }
+	"name": "club-portal",
+	"version": "1.0.0",
+	"description": "",
+	"main": "build/index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "concurrently \"npm run dev:backend\" \"vite\"",
+		"build:frontend": "vite build",
+		"build:backend": "tsc",
+		"build": "npm run build:frontend && npm run build:backend",
+		"start": "node build/index.js",
+		"preview": "vite preview",
+		"format": "prettier --write .",
+		"format:check": "prettier --check .",
+		"format:js": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
+		"format:html": "prettier --write \"**/*.html\"",
+		"format:css": "prettier --write \"**/*.css\"",
+		"format:json": "prettier --write \"**/*.json\""
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "commonjs",
+	"dependencies": {
+		"bcrypt": "^6.0.0",
+		"cookie-parser": "^1.4.7",
+		"express": "^5.2.1",
+		"multer": "^2.1.1",
+		"prettier": "^3.8.1",
+		"sqlite": "^5.1.1",
+		"sqlite3": "^6.0.1"
+	},
+	"devDependencies": {
+		"@types/bcrypt": "^6.0.0",
+		"@types/cookie-parser": "^1.4.10",
+		"@types/express": "^5.0.6",
+		"@types/multer": "^2.1.0",
+		"@types/node": "^25.5.0",
+		"typescript": "^6.0.2",
+		"vite": "^8.0.3",
+		"concurrently": "^9.0.0"
+	}
 }

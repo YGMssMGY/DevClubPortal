@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {
+		"target": "ES6",
+		"module": "nodenext",
+		"lib": ["ES6"],
+		"outDir": "./build",
+		"rootDir": ".",
+		"strict": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"types": ["node"]
+	},
+	"include": ["*.ts"],
+	"exclude": ["node_modules", "dist"]
+}

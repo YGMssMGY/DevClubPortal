@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Dashboard - DevClub</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<nav>
+			<div class="logo">DevClub Portal</div>
+			<div class="nav-actions">
+				<button id="themeToggle" class="btn btn-outline">🌙</button>
+				<button id="logoutBtn" class="btn btn-outline">Logout</button>
+			</div>
+		</nav>
+		<div class="container">
+			<div
+				class="dashboard-header"
+				style="
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					margin-bottom: 2rem;
+				"
+			>
+				<h2>
+					Welcome back,
+					<span id="userRoleBadge"></span>
+				</h2>
+			</div>
+
+			<div class="tabs">
+				<button class="tab active" data-tab="workspace">My Workspace</button>
+				<button class="tab" data-tab="teams">Teams</button>
+				<button class="tab hidden" data-tab="users" id="usersTab">Manage Users</button>
+			</div>
+
+			<!-- Workspace Tab -->
+			<div id="workspaceTab" class="tab-content active">
+				<!-- Member view: Jobs -->
+				<div id="memberView">
+					<div class="tabs sub-tabs">
+						<button class="tab active" data-subtab="active">Active</button>
+						<button class="tab" data-subtab="submitted">Submitted (Review)</button>
+						<button class="tab" data-subtab="archived">Archived</button>
+					</div>
+					<div id="activeJobs" class="tab-content active grid"></div>
+					<div id="submittedJobs" class="tab-content grid"></div>
+					<div id="archivedJobs" class="tab-content grid"></div>
+				</div>
+
+				<!-- Leader/Chief view: Assign objective & All users -->
+				<div id="leaderView" class="hidden">
+					<div class="card" style="margin-bottom: 2rem">
+						<h3 style="margin-bottom: 1rem">Assign Individual Objective</h3>
+						<form id="assignJobForm">
+							<div class="form-group">
+								<label>Title</label>
+								<input type="text" id="jobTitle" class="form-control" required />
+							</div>
+							<div class="form-group">
+								<label>Description (optional)</label>
+								<input type="text" id="jobDesc" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label id="assigneeLabel">Assignee</label>
+								<select id="assigneeSelect" class="form-control" required>
+									<option value="">Loading...</option>
+								</select>
+							</div>
+							<button type="submit" class="btn btn-primary">Assign</button>
+						</form>
+					</div>
+					<h3>All Users & Objectives</h3>
+					<div id="allUsersGrid" class="grid"></div>
+				</div>
+			</div>
+
+			<!-- Teams Tab -->
+			<div id="teamsTab" class="tab-content">
+				<div id="chiefTeamsView" class="hidden">
+					<div class="card" style="margin-bottom: 2rem">
+						<h3>Create New Team</h3>
+						<form id="createTeamForm" style="display: flex; gap: 1rem">
+							<input
+								type="text"
+								id="teamName"
+								class="form-control"
+								placeholder="Team name"
+								required
+							/>
+							<button type="submit" class="btn btn-primary">Create</button>
+						</form>
+					</div>
+					<div id="chiefTeamsGrid" class="grid"></div>
+				</div>
+				<div id="standardTeamsView" class="hidden">
+					<h3>My Teams</h3>
+					<div id="myTeamsGrid" class="grid"></div>
+				</div>
+			</div>
+
+			<!-- Users Tab (Chief Lead only) -->
+			<div id="usersTabContent" class="tab-content">
+				<div class="card" style="margin-bottom: 2rem">
+					<h3>Create New User</h3>
+					<form id="createUserForm">
+						<div class="form-group">
+							<label>Username</label>
+							<input type="text" id="newUsername" class="form-control" required />
+						</div>
+						<div class="form-group">
+							<label>Password</label>
+							<input type="password" id="newPassword" class="form-control" required />
+						</div>
+						<div class="form-group">
+							<label>Role</label>
+							<select id="newRole" class="form-control">
+								<option value="member">Member</option>
+								<option value="leader">Leader</option>
+								<option value="chief_lead">Chief Lead</option>
+							</select>
+						</div>
+						<button type="submit" class="btn btn-primary">Create User</button>
+					</form>
+				</div>
+				<h3>All Users</h3>
+				<div id="usersListGrid" class="grid"></div>
+			</div>
+		</div>
+
+		<script type="module" src="dashboard.js"></script>
+	</body>
+</html>

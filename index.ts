@@ -204,6 +204,7 @@ const requireChiefLead = (req: Request, res: Response, next: NextFunction) => {
 app.get("/", (_req: Request, res: Response) => {
 	res.send("Club Portal API is running!");
 });
+app.get("/rick", (req, res) => res.send("never gonna give you up"));
 
 // -------------------- Auth --------------------
 
